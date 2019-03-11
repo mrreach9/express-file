@@ -1,25 +1,18 @@
 const express = require('express');
 const path = require('path');
+const members = require('./Members');
 
 const app = express();
 
-const members = [{
-        name: 'reach',
-        age: 20
-    },
-    {
-        name: 'zreawwaach',
-        age: 20
-    },
-    {
-        name: 'qreacwwh',
-        age: 20
-    }
-];
+const logger = (req, res, next) => {
+    console.log(`${req.protocol}://${req.get('host')}${req.originalUrl}`);
+    next();
+};
+// init middleware
+app.use(logger);
 
-app.get('/api/members', (req, res) => {
-    res.json(members);
-});
+// Get all members
+app.get('/api/members', (req, res) => res.json(members));
 
 // Set Static Folder
 app.use(express.static(path.join(__dirname, 'public')));
